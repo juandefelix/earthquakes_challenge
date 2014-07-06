@@ -1,8 +1,40 @@
 <h1>Look for recent earthquakes with GeoNames</h1>
 <div>
-  <%= form_tag "/static_pages/create", id: 'form' do %>
     <%= label_tag(:q, "Enter the name of a city:") %>
-    <%= text_field_tag(:q) %>
-    <%= submit_tag "Search for a location", :id => 'send' %>
-  <% end %>
+    <%= text_field_tag(:q, 'Madrid') %>
+    <span class="button"> find earthquakes near this location </span>
 </div>
+
+
+<script>
+  console.log("this is working")
+  $(".button").click(function(){
+
+    var city = $("input[type=text]").val()
+    var url_string = 'http://maps.google.com/maps/api/geocode/json?address='
+    var location_url = url_string + city + "&sensor=false"
+
+    $.getJSON(location_url, function(data){
+
+        var north = data['results']['0']['geometry']['bounds']['northeast']['lat'] + 1
+        var south = data['results']['0']['geometry']['bounds']['southwest']['lat'] - 1
+        var east  = data['results']['0']['geometry']['bounds']['northeast']['lng'] - 1
+        var west  = data['results']['0']['geometry']['bounds']['southwest']['lng'] + 1
+
+        $('.coordenates').hide()
+
+        $('body').append("<p class='coordenates'>North is " + north + "</p>")
+        $('body').append("<p class='coordenates'>South is " + south + "</p>")
+        $('body').append("<p class='coordenates'>East is " + east + "</p>")
+        $('body').append("<p class='coordenates'>West is " + west + "</p>")
+
+        var earthquakes_string = "http://api.geonames.org/earthquakesJSON?"
+        var earthquakes_url = earthquakes_string + "north=" + north + "&south=" + south + "&east=" + east + "&west=" + west + "&username=demo"
+
+        $.getJSON(earthquakes_url, function(data){
+
+          var earthquakes = data['earthquakes']
+
+    })
+  })
+</script>
