@@ -1,0 +1,8 @@
+<h1>Look for recent earthquakes with GeoNames</h1>
+<div>
+  <%= form_tag "/static_pages/create", id: 'form' do %>
+    <%= label_tag(:q, "Enter the name of a city:") %>
+    <%= text_field_tag(:q) %>
+    <%= submit_tag "Search for a location", :id => 'send' %>
+  <% end %>
+</div>
