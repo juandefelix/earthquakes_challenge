@@ -28,13 +28,15 @@
         $('body').append("<p class='coordenates'>East is " + east + "</p>")
         $('body').append("<p class='coordenates'>West is " + west + "</p>")
 
+        $('body').append("<img src='http://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=600x300&maptype=terrain&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318&markers=color:red%7Clabel:C%7C40.718217,-73.998284'>")
+
         var earthquakes_string = "http://api.geonames.org/earthquakesJSON?"
         var earthquakes_url = earthquakes_string + "north=" + north + "&south=" + south + "&east=" + east + "&west=" + west + "&username=demo"
 
         $.getJSON(earthquakes_url, function(data){
 
           var earthquakes = data['earthquakes']
-
+        })
     })
   })
 </script>
