@@ -2,18 +2,12 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.button {
-  border: 1px solid #D0D0D0;
-  border-radius: 3px;
-  background-color: #DDDDDD;
-  padding: 3px 5px;
-
-  &:hover {
-    cursor: pointer;
-    background-color: #D0D0D0;
+#search {
+  text-align: center;
+  h1 {
+    padding: 40px 0;
   }
-
-  &:click {
-    background-color: red;
+  label {
+    padding-bottom: 20px;
   }
 }
