@@ -1,0 +1,60 @@
+/* line 4, /Users/juanfortiz/Desktop/bluewolf/app/assets/stylesheets/static_pages.css.scss */
+body, html {
+  height: 100%;
+}
+
+/* line 8, /Users/juanfortiz/Desktop/bluewolf/app/assets/stylesheets/static_pages.css.scss */
+#search {
+  text-align: center;
+  margin-bottom: 20px;
+}
+/* line 11, /Users/juanfortiz/Desktop/bluewolf/app/assets/stylesheets/static_pages.css.scss */
+#search h1 {
+  padding: 40px 0;
+}
+/* line 15, /Users/juanfortiz/Desktop/bluewolf/app/assets/stylesheets/static_pages.css.scss */
+#search label {
+  padding-bottom: 20px;
+}
+
+/* line 20, /Users/juanfortiz/Desktop/bluewolf/app/assets/stylesheets/static_pages.css.scss */
+#map-container {
+  height: 60%;
+  margin-bottom: 20px;
+}
+
+/* line 26, /Users/juanfortiz/Desktop/bluewolf/app/assets/stylesheets/static_pages.css.scss */
+#map-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* line 33, /Users/juanfortiz/Desktop/bluewolf/app/assets/stylesheets/static_pages.css.scss */
+#list {
+  text-align: center;
+}
+/* line 35, /Users/juanfortiz/Desktop/bluewolf/app/assets/stylesheets/static_pages.css.scss */
+#list ul {
+  list-style: none;
+  margin: 20px 0;
+}
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+
+
+ */
+
+
+
+@import "bootstrap-sprockets";
+@import "bootstrap";
