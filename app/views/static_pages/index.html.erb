@@ -3,16 +3,17 @@
     <div id="search" class='col-xs-10 col-xs-offset-1'>
       <h2>Look for recent earthquakes. Click on the markers for details</h2>
       <%= label_tag(:q, "Enter the name of a city:") %>
-      <%= text_field_tag(:q, 'Tokio') %><br>
+      <%= text_field_tag(:q) %><br>
       <button type="button" class="btn btn-info" id= "button1"> find earthquakes near this location</button>
-      <button type="button" class="btn btn-info" id="button2"> 10 biggest earthquakes on Earth</button>
     </div>
   </div>
 </div>
-<div class="col-xs-8 col-xs-offset-2">
+<div class="col-xs-8 col-xs-offset-2" id="map-container">
   <div id="map-canvas"></div>
 </div>
-
+<div class="col-xs-4 col-xs-offset-4" id='list'>
+  <a id='link' href="#"><b><u>Click here for a list of the ten most recent earthquakes</u></b></a>
+</div>
 <script>
 
   var map;
@@ -103,12 +104,14 @@
   var isoDate = dateTime.toISOString()
   var formattedTime = isoDate.match(/\d{4}-\d{2}-\d{2}/)[0]
 
+  console.log(formattedTime)
+
   //string for the geonames request
   var recentEarthquakesStr = 'http://api.geonames.org/earthquakesJSON?north=90&south=-90&east=90&west=-90&maxRows=10&username=juandefelix&date=' + formattedTime
 
-  $("#button2").click(function(){
+  $("#link").click(function(){
     $.getJSON(recentEarthquakesStr, function(data){
-      var earthqList = []
+      var earthqList = ['<ul>']
       $.each(data['earthquakes'], function(i, item) {
 
           var depth = item['depth']
@@ -119,7 +122,10 @@
                      '<b> magnitude: </b>'+ magn + 
                      '<b> depth: </b>' + depth +'</li>');
       });  // close each()
-      $('body').append( earthqList.join('') )
+      earthqList.push("</ul>")
+      console.log(earthqList.join(''))
+      $('#list').append( earthqList.join('') )
+      location.hash = "#list";
     })
   })
 </script>

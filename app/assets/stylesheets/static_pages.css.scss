@@ -18,13 +18,22 @@ body, html {
 }
 
 #map-container {
-  width: 100%;
-  height: 60%
+  // width: 100%;
+  height: 60%;
+  margin-bottom: 20px;
 }
 
 #map-canvas { 
   width: 100%;
   height: 100%;
-  position: relative;
-  padding-top: 50%;
+  // position: relative;
+  // padding-top: 50%;
+ }
+
+ #list {
+  text-align: center;
+  ul {
+    list-style: none;
+    margin-bottom: 20px;
+  }
  }
