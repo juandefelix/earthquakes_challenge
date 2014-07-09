@@ -4,7 +4,8 @@
       <h2>Look for recent earthquakes. Click on the markers for details</h2>
       <%= label_tag(:q, "Enter the name of a city:") %>
       <%= text_field_tag(:q, 'Tokio') %><br>
-      <button type="button" class="btn btn-info"> find earthquakes near this location</button>
+      <button type="button" class="btn btn-info" id= "button1"> find earthquakes near this location</button>
+      <button type="button" class="btn btn-info" id="button2"> 10 biggest earthquakes on Earth</button>
     </div>
   </div>
 </div>
@@ -26,7 +27,7 @@
 
   google.maps.event.addDomListener(window, 'load', initialize);
 
-  $("button").click(function(){
+  $("#button1").click(function(){
     var lng;
     var lat;
 
@@ -87,14 +88,38 @@
           bindInfoWindow(marker, map, infoWindow, contentArray);
         }
 
-      function bindInfoWindow(marker, map, infowindow, strDescription) {
-        google.maps.event.addListener(marker, 'click', function() {
-            infowindow.setContent(strDescription);
-            infowindow.open(map, marker);
-        });
-      }
-        // $('#map-canvas').show();
+        function bindInfoWindow(marker, map, infowindow, strDescription) {
+          google.maps.event.addListener(marker, 'click', function() {
+              infowindow.setContent(strDescription);
+              infowindow.open(map, marker);
+          });
+        }
       }) // end second ajax
     }) // end first ajax
   }) // end click
+
+  // format the date
+  var dateTime = new Date();
+  var isoDate = dateTime.toISOString()
+  var formattedTime = isoDate.match(/\d{4}-\d{2}-\d{2}/)[0]
+
+  //string for the geonames request
+  var recentEarthquakesStr = 'http://api.geonames.org/earthquakesJSON?north=90&south=-90&east=90&west=-90&maxRows=10&username=juandefelix&date=' + formattedTime
+
+  $("#button2").click(function(){
+    $.getJSON(recentEarthquakesStr, function(data){
+      var earthqList = []
+      $.each(data['earthquakes'], function(i, item) {
+          var depth = item['depth']
+          var magn = item['magnitude']
+          var date = item['datetime'].match(/\d{4}-\d{2}-\d{2}/)[0]
+
+          earthqList.push('<li><b>date: </b>'+ date +  
+                     '<b> magnitude: </b>'+ magn + 
+                     '<b> depth: </b>' + depth +'</li>');
+          // console.log(earthqList)
+          $('body').append( earthqList.join('') )
+      });  // close each()
+    })
+  })
 </script>
