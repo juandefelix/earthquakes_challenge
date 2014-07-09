@@ -40,6 +40,9 @@ end
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'pg', '0.15.1'
+gem 'rails_12factor', '0.0.2'
+
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
