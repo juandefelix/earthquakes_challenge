@@ -110,6 +110,7 @@
     $.getJSON(recentEarthquakesStr, function(data){
       var earthqList = []
       $.each(data['earthquakes'], function(i, item) {
+
           var depth = item['depth']
           var magn = item['magnitude']
           var date = item['datetime'].match(/\d{4}-\d{2}-\d{2}/)[0]
@@ -117,9 +118,8 @@
           earthqList.push('<li><b>date: </b>'+ date +  
                      '<b> magnitude: </b>'+ magn + 
                      '<b> depth: </b>' + depth +'</li>');
-          // console.log(earthqList)
-          $('body').append( earthqList.join('') )
       });  // close each()
+      $('body').append( earthqList.join('') )
     })
   })
 </script>
