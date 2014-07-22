@@ -30,72 +30,71 @@
   google.maps.event.addDomListener(window, 'load', initialize);
 
   $("#button1").click(function(){
+    var north; 
+    var east;  
+    var south; 
+    var west;  
 
-    var city = $("input[type=text]").val()
-    var url_string = 'http://maps.google.com/maps/api/geocode/json?address='
-    var location_url = url_string + city + "&sensor=false"
-
-
-    // $.getJSON(location_url, function(data){
     geocode.geocode({ address: city }, function(data, status){
 
       center = data[0].geometry.location
-      console.log(center);
+      // console.log(center);
 
       map.setCenter(center);
 
-      console.log(data[0].geometry.bounds.getNorthEast().lat());
-      var north = data[0].geometry.bounds.getNorthEast().lat() + 1
-      var east  = data[0].geometry.bounds.getNorthEast().lng() + 1
-      var south = data[0].geometry.bounds.getSouthWest().lat() - 1
-      var west  = data[0].geometry.bounds.getSouthWest().lng() - 1
+      // console.log(data[0].geometry.bounds.getNorthEast().lat());
+      north = data[0].geometry.bounds.getNorthEast().lat() + 1
+      east  = data[0].geometry.bounds.getNorthEast().lng() + 1
+      south = data[0].geometry.bounds.getSouthWest().lat() - 1
+      west  = data[0].geometry.bounds.getSouthWest().lng() - 1
 
-      var earthquakes_string = "http://api.geonames.org/earthquakesJSON?"
-      var earthquakes_url = earthquakes_string + "north=" + north + "&south=" + south + "&east=" + east + "&west=" + west + "&username=juandefelix"
+    }) // end geocode call
 
-      $.getJSON(earthquakes_url, function(data){
+    var earthquakes_string = "http://api.geonames.org/earthquakesJSON?"
+    var earthquakes_url = earthquakes_string + "north=" + north + "&south=" + south + "&east=" + east + "&west=" + west + "&username=juandefelix"
 
-        var ary = data['earthquakes']
+    $.getJSON(earthquakes_url, function(data){
 
-        infoWindow = new google.maps.InfoWindow({
-          content: "holding..."
+      var ary = data['earthquakes']
+
+      infoWindow = new google.maps.InfoWindow({
+        content: "holding..."
+      });
+
+      for(i = 0; i < ary.length; i++){
+
+        lat = ary[i]['lat']
+        longitude = ary[i]['lng']
+        depth = ary[i]['depth']
+        magnitude = ary[i]['magnitude']
+
+        marker = new google.maps.Marker({
+          position: new google.maps.LatLng(lat,longitude),
+          map: map,
+          title: 'Hello World!'
         });
 
-        for(i = 0; i < ary.length; i++){
+        var contentArray = '<div id="content">'+
+          '<div id="siteNotice">'+
+          '</div>'+
+          '<div id="bodyContent">'+
+          '<p><b>latitude: </b>' + lat + '</p>'+
+          '<p><b>longitude: </b>' + longitude + '</p>'+
+          '<p><b>depth: </b>' + depth + '</p>'+
+          '<p><b>magnitude: </b>' + magnitude + '</p>'+
+          '</div>'+
+          '</div>';
+          
+        bindInfoWindow(marker, map, infoWindow, contentArray);
+      } // end for
 
-          lat = ary[i]['lat']
-          longitude = ary[i]['lng']
-          depth = ary[i]['depth']
-          magnitude = ary[i]['magnitude']
-
-          marker = new google.maps.Marker({
-            position: new google.maps.LatLng(lat,longitude),
-            map: map,
-            title: 'Hello World!'
-          });
-
-          var contentArray = '<div id="content">'+
-            '<div id="siteNotice">'+
-            '</div>'+
-            '<div id="bodyContent">'+
-            '<p><b>latitude: </b>' + lat + '</p>'+
-            '<p><b>longitude: </b>' + longitude + '</p>'+
-            '<p><b>depth: </b>' + depth + '</p>'+
-            '<p><b>magnitude: </b>' + magnitude + '</p>'+
-            '</div>'+
-            '</div>';
-            
-          bindInfoWindow(marker, map, infoWindow, contentArray);
-        }
-
-        function bindInfoWindow(marker, map, infowindow, strDescription) {
-          google.maps.event.addListener(marker, 'click', function() {
-              infowindow.setContent(strDescription);
-              infowindow.open(map, marker);
-          });
-        }
-      }) // end second ajax
-    }) // end first ajax
+      function bindInfoWindow(marker, map, infowindow, strDescription) {
+        google.maps.event.addListener(marker, 'click', function() {
+            infowindow.setContent(strDescription);
+            infowindow.open(map, marker);
+        });
+      }
+    }) // end geonames ajax
   }) // end click
 
   // format the date
