@@ -39,9 +39,11 @@
     geocode.geocode({ address: city }, function(data, status){
 
       center = data[0].geometry.location
+      bounds = data[0].geometry.bounds;
       // console.log(center);
 
       map.setCenter(center);
+      map.panToBounds(bounds);
 
       // console.log(data[0].geometry.bounds.getNorthEast().lat());
       north = data[0].geometry.bounds.getNorthEast().lat() + 1
