@@ -17,6 +17,7 @@
 <script>
 
   var map;
+  var geocode = new google.maps.Geocoder();
   
   function initialize() {
     var mapOptions = {
@@ -35,18 +36,19 @@
     var location_url = url_string + city + "&sensor=false"
 
 
-    $.getJSON(location_url, function(data){
+    // $.getJSON(location_url, function(data){
+    geocode.geocode({ address: city }, function(data, status){
 
-      center = data.results[0].geometry.location
-      // console.log(center);
-      console.log(data);
+      center = data[0].geometry.location
+      console.log(center);
 
       map.setCenter(center);
 
-      var north = data.results[0].geometry.bounds.northeast.lat + 1
-      var south = data.results[0].geometry.bounds.southwest.lat - 1
-      var east  = data.results[0].geometry.bounds.northeast.lng + 1
-      var west  = data.results[0].geometry.bounds.southwest.lng - 1
+      console.log(data[0].geometry.bounds.getNorthEast().lat());
+      var north = data[0].geometry.bounds.getNorthEast().lat() + 1
+      var east  = data[0].geometry.bounds.getNorthEast().lng() + 1
+      var south = data[0].geometry.bounds.getSouthWest().lat() - 1
+      var west  = data[0].geometry.bounds.getSouthWest().lng() - 1
 
       var earthquakes_string = "http://api.geonames.org/earthquakesJSON?"
       var earthquakes_url = earthquakes_string + "north=" + north + "&south=" + south + "&east=" + east + "&west=" + west + "&username=juandefelix"
