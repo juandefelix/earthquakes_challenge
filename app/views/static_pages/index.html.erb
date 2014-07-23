@@ -17,7 +17,6 @@
 <script>
 
   var map;
-  var geocode = new google.maps.Geocoder();
   
   function initialize() {
     var mapOptions = {
@@ -36,12 +35,16 @@
     var west;  
     var city = $("input[type=text]").val();
 
-    geocode.geocode({ address: city }, function(data, status){
-
-      center = data[0].geometry.location
-      bounds = data[0].geometry.bounds;
       // console.log(center);
 
+    var geocode = new google.maps.Geocoder();
+    geocode.geocode({ address: city }, function(data, status){
+
+      bounds = data[0].geometry.bounds;
+      center = data[0].geometry.location
+
+
+      // alert(center);
       map.setCenter(center);
       map.panToBounds(bounds);
 
@@ -58,16 +61,18 @@
 
         var ary = data['earthquakes']
 
+        // console.log(ary[0]);
+
         infoWindow = new google.maps.InfoWindow({
           content: "holding..."
         });
 
         for(i = 0; i < ary.length; i++){
-
-          lat = ary[i]['lat']
-          longitude = ary[i]['lng']
-          depth = ary[i]['depth']
-          magnitude = ary[i]['magnitude']
+          var theDate = ary[i].datetime
+          var lat = ary[i].lat
+          var longitude = ary[i].lng
+          var depth = ary[i].depth
+          var magnitude = ary[i].magnitude
 
           marker = new google.maps.Marker({
             position: new google.maps.LatLng(lat,longitude),
@@ -79,10 +84,11 @@
             '<div id="siteNotice">'+
             '</div>'+
             '<div id="bodyContent">'+
-            '<p><b>latitude: </b>' + lat + '</p>'+
-            '<p><b>longitude: </b>' + longitude + '</p>'+
-            '<p><b>depth: </b>' + depth + '</p>'+
-            '<p><b>magnitude: </b>' + magnitude + '</p>'+
+            '<p><b>date: </b>' + theDate + '</p>'+
+            '<p><b>latitude: </b>' + lat + '&nbsp&nbsp&nbsp'+
+            '<b>longitude: </b>' + longitude + '</p>'+
+            '<p><b>depth: </b>' + depth + '&nbsp&nbsp&nbsp'+
+            '<b>magnitude: </b>' + magnitude + '</p>'+
             '</div>'+
             '</div>';
             
@@ -105,21 +111,21 @@
   var formattedTime = isoDate.match(/\d{4}-\d{2}-\d{2}/)[0]
 
   // console.log(formattedTime)
-
+  // http://api.geonames.org/earthquakesJSON?north=90&south=-90&east=180&west=-180&maxRows=10&username=juandefelix&date=2014-07-23&minMagnitude=6
   //string for the geonames request
-  var recentEarthquakesStr = 'http://api.geonames.org/earthquakesJSON?north=90&south=-90&east=90&west=-90&maxRows=10&username=juandefelix&date=' + formattedTime
+  var recentEarthquakesStr = 'http://api.geonames.org/earthquakesJSON?north=90&south=-90&east=180&west=-180&maxRows=10&minMagnitude=6&username=juandefelix&date=' + formattedTime
 
   $("#link").click(function(){
     $.getJSON(recentEarthquakesStr, function(data){
-      console.log(data['earthquakes'])
+      console.log(data.earthquakes)
       var earthqList = ['<ul>']
-      $.each(data['earthquakes'], function(i, item) {
+      $.each(data.earthquakes, function(i, item) {
 
-          var depth = item['depth']
-          var magn = item['magnitude']
-          var date = item['datetime'].match(/\d{4}-\d{2}-\d{2}/)[0]
-          var lat = item['lat']
-          var lng = item['lng']
+          var depth = item.depth
+          var magn = item.magnitude
+          var date = item.datetime.match(/\d{4}-\d{2}-\d{2}/)[0]
+          var lat = item.lat
+          var lng = item.lng
 
           earthqList.push('<li><b>Date: </b>'+ date +  
                      '<b> Magnitude: </b>'+ magn + 
